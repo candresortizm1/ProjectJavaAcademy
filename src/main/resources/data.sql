@@ -1,0 +1,2 @@
+INSERT INTO user (id, document,name, last_name, nickname, address, zip_code, country, state) VALUES
+            (1,'1013616596', 'Andres', 'Ortiz', 'candresortizm', 'Calle 27 sur # 22 A - 05', 111811, 'Colombia', 'Bogotá');
