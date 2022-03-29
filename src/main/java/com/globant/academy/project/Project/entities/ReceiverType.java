@@ -15,5 +15,5 @@ public class ReceiverType {
     private String receiverType;
 
     @OneToMany(mappedBy = "receiverType")
-    private List<UserMessage> userMessages;
+    private List<ReceiverMessage> receiverMessages;
 }

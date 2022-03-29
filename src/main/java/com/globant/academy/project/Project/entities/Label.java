@@ -3,7 +3,7 @@ package com.globant.academy.project.Project.entities;
 import lombok.Data;
 import javax.persistence.*;
 import java.util.List;
-import static javax.persistence.GenerationType.AUTO;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity(name="label")
@@ -11,7 +11,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class Label {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private long id;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name="user_id")
@@ -20,9 +20,8 @@ public class Label {
     private String label;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_label_message",
-            joinColumns = @JoinColumn(name = "user_message_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "label_id",
-                    referencedColumnName = "id"))
-    private List<UserMessage> userMessages;
+    @JoinTable(name = "label_message",
+            joinColumns = @JoinColumn(name = "message_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "label_id", referencedColumnName = "id"))
+    private List<AppMessage> messages;
 }

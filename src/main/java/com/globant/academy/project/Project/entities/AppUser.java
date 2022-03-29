@@ -1,6 +1,11 @@
 package com.globant.academy.project.Project.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +14,16 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity(name="user")
 @Data
-public class AppUser {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class AppUser{
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private int id;
 
-    @Column(name="nickname", unique=true)
+    @Column(name="nickname")
     private String nickname;
 
     @Column(name="name")
@@ -41,20 +49,13 @@ public class AppUser {
     private String country;
 
     @OneToMany(
-            mappedBy = "user",
-            orphanRemoval = true,
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            fetch = FetchType.LAZY
-    )
-    private List<Label> labels = new ArrayList<>();
-
-    @OneToMany(
             mappedBy = "sender",
             orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
             fetch = FetchType.LAZY
     )
-    private List<UserMessage> sentUserMessages = new ArrayList<>();
+
+    private List<AppMessage> sentMessages = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "receiver",
@@ -62,19 +63,20 @@ public class AppUser {
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
             fetch = FetchType.LAZY
     )
-    private List<UserMessage> receivedUserMessages = new ArrayList<>();
+    private List<ReceiverMessage> receivedUserMessages = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "user",
+            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            fetch = FetchType.LAZY
+    )
+    private List<Label> labels = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "user_message",
             joinColumns = @JoinColumn(name = "receiver_id"),
             inverseJoinColumns = @JoinColumn(name = "message_id"))
     private List<AppMessage> receivedMessages = new ArrayList<>();
-
-    @OneToMany
-    @JoinTable(name = "user_message",
-            joinColumns = @JoinColumn(name = "sender_id"),
-            inverseJoinColumns = @JoinColumn(name = "message_id"))
-    private List<AppMessage> sentMessages = new ArrayList<>();
-
 
 }

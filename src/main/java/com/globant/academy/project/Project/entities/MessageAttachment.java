@@ -9,7 +9,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class MessageAttachment {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private long id;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name="message_id")
