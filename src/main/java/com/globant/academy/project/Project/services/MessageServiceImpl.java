@@ -18,6 +18,7 @@ public class MessageServiceImpl implements MessageService{
     private final AppMessageRepository messageRepository;
     private final AppUserRepository appUserRepository;
     private final MessageMapper messageMapper;
+    private final LabelRepository labelRepository;
 
     @Override
     public void sendMessage(String userId_str, AppMessage appMessage) {
@@ -40,6 +41,18 @@ public class MessageServiceImpl implements MessageService{
         }
         List<MessageDTO> allMessagesDTO = messageMapper.listModelToDTO(allMessages);
         return allMessagesDTO;
+    }
+
+    @Override
+    public String addLabel(AppMessage appMessage, String messageIdStr) {
+        int messageId = Integer.parseInt(messageIdStr);
+        AppMessage finalMessage = messageRepository.findById(messageId).get();
+
+        List<Label> labels = (List<Label>) appMessage.getLabels().stream().map(element->{
+            return labelRepository.findById(element.getId()).get();}).toList();
+        finalMessage.setLabels(labels);
+        messageRepository.save(finalMessage);
+        return "labels added";
     }
 
 }
